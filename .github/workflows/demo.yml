@@ -36,13 +36,26 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: dist-files
-          path: |
-            dist
-            package.json
+          path: dist
+
+          # add multiple path
+          # path: |
+          #   dist
+          #   package.json
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      # Get the previous uploaded artifact
+      - name: Get build artifacts
+        uses: actions/download-artifact@v3
+        # Specify the file or the artifact
+        with:
+          name: dist-files
+
+      - name: Ouput-contents
+        run: ls
+
       - name: Deploy
         run: echo "Deploying..."
