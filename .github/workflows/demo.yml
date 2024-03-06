@@ -15,7 +15,11 @@ jobs:
         run: npm run lint
       - name: Test code
         run: npm run test
+
   build:
+    # "needs" used to specify this jobs to run
+    # after other specified job
+    # in this case "test" job
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -25,6 +29,17 @@ jobs:
         run: npm ci
       - name: Build website
         run: npm run build
+
+        # Step to upload the artifacts using the
+        # "upload-artifact" action
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: |
+            dist
+            package.json
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
